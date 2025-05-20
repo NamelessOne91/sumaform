@@ -285,6 +285,60 @@ data "aws_ami" "suma-server-50-arm64-ltd-paygo" {
   }
 }
 
+// EMEA offer
+data "aws_ami" "smlm-server-51-x86_64-ltd-paygo" {
+  most_recent = true
+  name_regex  = "^SUSE-Multi-Linux-Manager-Server-5\\.1.*"
+  owners      = ["679593333241"]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "product-code"
+    values = ["8ysfelcfs2dkok3fba4s5uqo4"]
+  }
+}
+
+// EMEA offer
+data "aws_ami" "smlm-server-51-arm64-ltd-paygo" {
+  most_recent = true
+  name_regex  = "^SUSE-Multi-Linux-Manager-Server-5\\.1.*"
+  owners      = ["679593333241"]
+
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "product-code"
+    values = ["umnofojstehgl6jnp9nspg7g"]
+  }
+}
+
 data "aws_ami" "suma-proxy-43-byos" {
   most_recent = true
   name_regex  = "^suse-manager-proxy-4-3-byos-v"
@@ -309,6 +363,27 @@ data "aws_ami" "suma-proxy-43-byos" {
 data "aws_ami" "suma-proxy-50-byos" {
   most_recent = true
   name_regex  = "^suse-manager-proxy-5-0-byos-v"
+  owners      = ["679593333241"]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+}
+
+data "aws_ami" "smlm-proxy-51-byos" {
+  most_recent = true
+  name_regex  = "^suse-mlm-proxy-5-1-byos-v"
   owners      = ["679593333241"]
 
   filter {
