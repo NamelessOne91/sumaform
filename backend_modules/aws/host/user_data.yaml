@@ -1,7 +1,6 @@
 #cloud-config
 
 %{ if public_instance == "false" }
-#disable_root: false
 disable_root: false
 ssh_pwauth: true
 chpasswd:

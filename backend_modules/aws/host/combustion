@@ -47,3 +47,18 @@ echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGEPA8UvZ/6tTiL+MKGUAsHJuPlDpueeDmbuJ+
 # Add a public ssh key and enable sshd
 systemctl enable sshd.service
 systemctl restart sshd.service
+
+%{ if install_salt_bundle }
+PACKAGES="venv-salt-minion"
+%{ else }
+PACKAGES="salt-minion"
+%{ endif }
+
+zypper --non-interactive install $PACKAGES
+
+# Disabling this timer safely by masking it (systemctl might still be unavailable during the Combustion phase)
+echo "Disabling automatic daily system updates"
+ln -sf /dev/null /etc/systemd/system/transactional-update.timer
+
+# Leave a marker
+echo "Configured with combustion" > /etc/issue.d/combustion
