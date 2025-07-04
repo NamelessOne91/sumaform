@@ -1,13 +1,22 @@
 #cloud-config
 
 %{ if public_instance == "false" }
-#disable_root: false
 disable_root: false
 ssh_pwauth: true
 chpasswd:
   expire: false
   list: |
     root:linux
+%{ endif }
+
+%{ if image == "suma-server-50-x86_64-ltd-paygo" || image == "suma-server-50-arm64-ltd-paygo" }
+runcmd:
+%{ if install_salt_bundle }
+  - [ transactional-update, --continue, --non-interactive, pkg, install, venv-salt-minion ]
+%{ else }
+  - [ transactional-update, --continue, --non-interactive, pkg, install, salt-minion ]
+%{ endif }
+  - [ reboot ]
 %{ endif }
 
 %{ if image == "opensuse156o" }
