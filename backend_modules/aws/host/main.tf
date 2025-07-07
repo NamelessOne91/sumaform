@@ -138,6 +138,14 @@ resource "aws_instance" "instance" {
   }
 }
 
+output "debug_combustion_flag" {
+  value = {
+    image           = var.image
+    combustion_flag = local.combustion
+    image_list      = local.combustion_images
+  }
+}
+
 resource "aws_route53_record" "dns_record" {
   count = local.route53_domain == null ? 0 : 1
 
