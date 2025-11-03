@@ -2,12 +2,24 @@ include:
   - server_containerized.install_common
 
 {% if grains['osfullname'] not in ['SLE Micro', 'SL-Micro', 'openSUSE Leap Micro'] %}
+container_selinux_install:
+  cmd.run:
+    - name: zypper install -y container-selinux
+
+k3s_selinux_install:
+  cmd.run: 
+    - name: zypper install -y https://rpm.rancher.io/k3s/stable/common/microos/noarch/k3s-selinux-1.6-1.sle.noarch.rpm
+    - require:
+      - cmd: container_selinux_install
+
 k3s_install:
   cmd.run:
     - name: curl -sfL https://get.k3s.io | sh -
     - env:
       - INSTALL_K3S_EXEC: "--tls-san={{ grains.get('fqdn') }}" 
     - unless: systemctl is-active k3s
+    - require:
+      - cmd: k3s_selinux_install
 
 wait_for_traefik:
   cmd.script:
