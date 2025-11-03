@@ -6,6 +6,12 @@ container_selinux_install:
   cmd.run:
     - name: zypper install -y container-selinux
 
+import_rancher_public_key:
+  cmd.run:
+    - name: rpm --import https://rpm.rancher.io/public.key
+    - require:
+      - cmd: container_selinux_install
+
 k3s_selinux_install:
   cmd.run: 
     - name: zypper install -y https://rpm.rancher.io/k3s/stable/common/microos/noarch/k3s-selinux-1.6-1.sle.noarch.rpm
