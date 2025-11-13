@@ -1,7 +1,3 @@
-locals {
-  location = lookup(var.provider_settings, "location", null)
-}
-
 data "azurerm_platform_image" "suma-server-50-arm64-ltd-paygo" {
   location  = local.location
   publisher = "suseirelandltd1692213356027"
