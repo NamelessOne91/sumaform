@@ -34,7 +34,6 @@ locals {
   user_data = templatefile("${path.module}/user_data.yaml", {
     image                    = var.image
     public_instance          = local.public_instance
-    mirror_url               = var.base_configuration["mirror"]
     install_salt_bundle      = var.install_salt_bundle
   })
 }
@@ -76,6 +75,11 @@ resource "azurerm_network_interface" "suma-additional-nic" {
   }
 }
 
+data "azurerm_ssh_public_key" "suma-ci-public-ssh" {
+  name                = local.provider_settings["public_key_location"]
+  resource_group_name = "suma-ci-resources"
+}
+
 resource "azurerm_linux_virtual_machine" "instance" {
   count                            = var.quantity
   name                             = "${local.resource_name_prefix}${var.quantity > 1 ? "-${count.index + 1}" : ""}"
@@ -83,9 +87,9 @@ resource "azurerm_linux_virtual_machine" "instance" {
   location                         = local.location
   resource_group_name              = local.resource_group_name
   network_interface_ids            = compact(["${azurerm_network_interface.suma-main-nic[count.index].id}","${var.connect_to_additional_network && local.additional_network != null ? azurerm_network_interface.suma-additional-nic[count.index].id:""}"])
-  size                          = local.provider_settings["vm_size"]
-  admin_username      = "azureuser"
-  disable_password_authentication = true
+  size                             = local.provider_settings["vm_size"]
+  admin_username                   = "azureuser"
+  disable_password_authentication  = true
   os_disk {
     name              = "${local.resource_name_prefix}${var.quantity > 1 ? "-${count.index + 1}" : ""}-os-disk"
     caching           = "ReadWrite"
@@ -98,9 +102,9 @@ resource "azurerm_linux_virtual_machine" "instance" {
     sku       = local.platform_image.sku
     version   = local.platform_image.version
   }
-    admin_ssh_key {
+  admin_ssh_key {
     username   = "azureuser"
-    public_key = file(local.provider_settings["public_key_location"])
+    public_key = data.azurerm_ssh_public_key.suma-ci-public-ssh.public_key
   }
 }
 
