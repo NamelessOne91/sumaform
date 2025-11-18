@@ -137,7 +137,7 @@ resource "terraform_data" "host_salt_configuration" {
   count      = var.provision ? var.quantity : 0
 
   triggers_replace = {
-    main_volume_id = length(azurerm_managed_disk.addtionaldisks) == var.quantity ? azurerm_managed_disk.additional_disks[count.index].id : null
+    main_volume_id = length(azurerm_managed_disk.additional_disks) == var.quantity ? azurerm_managed_disk.additional_disks[count.index].id : null
     domain_id      = length(azurerm_linux_virtual_machine.instance) == var.quantity ? azurerm_linux_virtual_machine.instance[count.index].id : null
     grains_subset = yamlencode(
       {
