@@ -22,9 +22,6 @@ runcmd:
 %{ else ~}
   - zypper up --allow-vendor-change --no-confirm salt-minion
 %{ endif ~}
-
-%{ endif ~}
-
 %{ endif ~}
 
 %{ if image == "sles15sp2o" ~}
