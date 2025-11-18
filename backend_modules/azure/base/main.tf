@@ -2,7 +2,7 @@ locals {
   name_prefix                          = var.name_prefix
 
   create_network                       = lookup(var.provider_settings, "create_network", true)
-  location                             = lookup(var.provider_settings, "location", null)
+  location                             = lookup(var.provider_settings, "region", null)
   ssh_allowed_ips                      = lookup(var.provider_settings, "ssh_allowed_ips", [])
   additional_network                   = lookup(var.provider_settings, "additional_network", "172.16.2.0/24")
 
