@@ -65,7 +65,7 @@ locals {
       sles12sp5o   = { platform_image = data.azurerm_platform_image.sles12sp5o },
       ubuntu2004   = { platform_image = data.azurerm_platform_image.ubuntu2004 },
       ubuntu2204   = { platform_image = data.azurerm_platform_image.ubuntu2204 },
-      ubuntu2404   = { platform_image = data.azurerm_platform_image.ubuntu2404 },
+      /* ubuntu2404   = { platform_image = data.azurerm_platform_image.ubuntu2404 }, */
       rhel9        = { platform_image = data.azurerm_platform_image.rhel9 },
       rhel8        = { platform_image = data.azurerm_platform_image.rhel8 },
     }
