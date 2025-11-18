@@ -17,105 +17,6 @@ locals {
   key_file = lookup(var.provider_settings, "key_file", null)
 }
 
-data "azurerm_platform_image" "opensuse154o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "opensuse-leap-15-4"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "opensuse155o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "opensuse-leap-15-5"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "opensuse156o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "opensuse-leap-15-6"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "sles12sp5o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "sles-12-sp5-byos"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "sles15sp4o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "sles-15-sp4-byos"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "sles15sp5o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "sles-15-sp5-byos"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "sles15sp6o" {
-  location  = local.location
-  publisher = "suse"
-  offer     = "sles-15-sp6-byos"
-  sku       = "gen2"
-}
-
-data "azurerm_platform_image" "centos7" {
-  location  = local.location
-  publisher = "OpenLogic"
-  offer     = "CentOS-LVM"
-  sku       = "7-lvm-gen2"
-}
-
-data "azurerm_platform_image" "rhel7" {
-  location  = local.location
-  publisher = "RedHat"
-  offer     = "RHEL"
-  sku       = "7lvm-gen2"
-}
-
-data "azurerm_platform_image" "rhel8" {
-  location  = local.location
-  publisher = "RedHat"
-  offer     = "RHEL"
-  sku       = "8-lvm-gen2"
-}
-
-data "azurerm_platform_image" "rhel9" {
-  location  = local.location
-  publisher = "RedHat"
-  offer     = "RHEL"
-  sku       = "9-lvm-gen2"
-}
-
-data "azurerm_platform_image" "ubuntu2004" {
-  location  = local.location
-  publisher = "cognosys"
-  offer     = "ubuntu-20-04-lts"
-  sku       = "ubuntu-20-04-lts"
-}
-
-data "azurerm_platform_image" "ubuntu2204" {
-  location  = local.location
-  publisher = "cognosys"
-  offer     = "ubuntu-22-04-lts"
-  sku       = "ubuntu-22-04-lts"
-}
-
-data "azurerm_platform_image" "ubuntu2404" {
-  location  = local.location
-  publisher = "cognosys"
-  offer     = "ubuntu-24-04-lts"
-  sku       = "ubuntu-24-04-lts"
-}
-
-
 module "network" {
   source = "../network"
 
@@ -149,20 +50,24 @@ locals {
     key_file             = local.key_file
     resource_group_name  = module.network.configuration.resource_group_name
     platform_image_info  = {
-      opensuse154o = { platform_image = data.azurerm_platform_image.opensuse154o },
-      opensuse155o = { platform_image = data.azurerm_platform_image.opensuse155o },
+      suma-server-50-arm64-ltd-paygo  = { platform_image = data.azurerm_platform_image.suma-server-50-arm64-ltd-paygo },
+      suma-proxy-50-arm64-byos        = { platform_image = data.azurerm_platform_image.suma-proxy-50-arm64-byos },
+      suma-server-50-x86_64-ltd-paygo = { platform_image = data.azurerm_platform_image.suma-server-50-x86_64-ltd-paygo },
+      suma-proxy-50-x86_64-byos       = { platform_image = data.azurerm_platform_image.suma-proxy-50-x86_64-byos },
+      smlm-server-51-arm64-ltd-paygo  = { platform_image = data.azurerm_platform_image.smlm-server-51-arm64-ltd-paygo },
+      smlm-proxy-51-arm64-byos        = { platform_image = data.azurerm_platform_image.smlm-proxy-51-arm64-byos },
+      smlm-server-51-x86_64-ltd-paygo = { platform_image = data.azurerm_platform_image.smlm-server-51-x86_64-ltd-paygo },
+      smlm-proxy-51-x86_64-byos       = { platform_image = data.azurerm_platform_image.smlm-proxy-51-x86_64-byos },
       opensuse156o = { platform_image = data.azurerm_platform_image.opensuse156o },
       sles15sp4o   = { platform_image = data.azurerm_platform_image.sles15sp4o },
       sles15sp5o   = { platform_image = data.azurerm_platform_image.sles15sp5o },
       sles15sp6o   = { platform_image = data.azurerm_platform_image.sles15sp6o },
       sles12sp5o   = { platform_image = data.azurerm_platform_image.sles12sp5o },
-      centos7      = { platform_image = data.azurerm_platform_image.centos7 },
       ubuntu2004   = { platform_image = data.azurerm_platform_image.ubuntu2004 },
       ubuntu2204   = { platform_image = data.azurerm_platform_image.ubuntu2204 },
       ubuntu2404   = { platform_image = data.azurerm_platform_image.ubuntu2404 },
       rhel9        = { platform_image = data.azurerm_platform_image.rhel9 },
       rhel8        = { platform_image = data.azurerm_platform_image.rhel8 },
-      rhel7        = { platform_image = data.azurerm_platform_image.rhel7 },
     }
     },
     local.create_network ? module.network.configuration : {
@@ -180,7 +85,7 @@ module "bastion" {
   source                        = "../host"
   quantity                      = local.create_network ? 1 : 0
   base_configuration            = local.configuration_output
-  image                         = "opensuse154o"
+  image                         = "opensuse156o"
   name                          = "bastion"
   connect_to_additional_network = true
   provider_settings = {
