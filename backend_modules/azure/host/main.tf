@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "instance" {
 
 
 /** START: Set up an extra data disk */
-resource "azurerm_managed_disk" "addtionaldisks" {
+resource "azurerm_managed_disk" "additional_disks" {
   count                =  var.additional_disk_size > 0 ? var.quantity : 0
   name                 = "${local.resource_name_prefix}-data-volume${var.quantity > 1 ? "-${count.index + 1}" : ""}"
   location             = local.location
@@ -117,9 +117,9 @@ resource "azurerm_managed_disk" "addtionaldisks" {
   disk_size_gb         = var.additional_disk_size > 0 ? var.additional_disk_size : (local.disk_snapshot == null?0:local.disk_snapshot.disk_size_gb)
 }
 
-resource "azurerm_virtual_machine_data_disk_attachment" "addtionaldisks-attach" {
+resource "azurerm_virtual_machine_data_disk_attachment" "additional_disks-attach" {
   count = var.additional_disk_size == null ? 0 : var.additional_disk_size > 0 ? var.quantity : 0
-  managed_disk_id    = azurerm_managed_disk.addtionaldisks[count.index].id
+  managed_disk_id    = azurerm_managed_disk.additional_disks[count.index].id
   virtual_machine_id = azurerm_linux_virtual_machine.instance[count.index].id
   lun                = count.index
   caching            = "ReadWrite"
@@ -127,12 +127,13 @@ resource "azurerm_virtual_machine_data_disk_attachment" "addtionaldisks-attach" 
 /** END: Set up an extra data disk */
 
 /** START: provisioning */
- resource "terraform_data" "host_salt_configuration" {
-  depends_on = [azurerm_linux_virtual_machine.instance, azurerm_virtual_machine_data_disk_attachment.addtionaldisks-attach]
+
+resource "terraform_data" "host_salt_configuration" {
+  depends_on = [azurerm_linux_virtual_machine.instance, azurerm_virtual_machine_data_disk_attachment.additional_disks-attach]
   count      = var.provision ? var.quantity : 0
 
   triggers_replace = {
-    main_volume_id = length(azurerm_managed_disk.addtionaldisks) == var.quantity ? azurerm_managed_disk.addtionaldisks[count.index].id : null
+    main_volume_id = length(azurerm_managed_disk.addtionaldisks) == var.quantity ? azurerm_managed_disk.additional_disks[count.index].id : null
     domain_id      = length(azurerm_linux_virtual_machine.instance) == var.quantity ? azurerm_linux_virtual_machine.instance[count.index].id : null
     grains_subset = yamlencode(
       {
