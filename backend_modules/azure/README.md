@@ -51,7 +51,7 @@ Available provider settings for the base module:
 | key_file            | string | `null`          | ssh key file                                                                                                    |
 | bastion_host        | string | `null`          | bastian host use to connect machines in private network                                                         |
 | additional_network  | string | `172.16.2.0/24` | A network mask for the additional network (needs to follow the pattern 172.16.X.Y/24, where X cannot be 0 or 1) |
-| public_key_location | string | `null`          | Location for access public key                                                                                  |
+| public_key_name | string | `null`          | name of the public SSH key to be used                  |
 
 An example follows:
 
@@ -72,7 +72,7 @@ Following settings apply to all modules that create one or more hosts of the sam
 
 | Variable name       | Type     | Default value                                                    | Description                                                         |
 |---------------------|----------|------------------------------------------------------------------|---------------------------------------------------------------------|
-| public_key_location | string   | [from base Module](base-module)                                  | Location for access public key                                      |
+| public_key_name | string   | [from base Module](base-module)                                  | Name of the public SS to be used
 | key_name            | string   | [from base Module](base-module)                                  | ssh key name in Azure                                               |
 | key_file            | string   | [from base Module](base-module)                                  | ssh key file                                                        |
 | ssh_user            | string   | OS-specific SSH user (ec2-user, centos, ubuntu, etc)             | ssh user to use in ssh into the machine for provisioning            |

@@ -3,8 +3,9 @@ locals {
   platform_image = lookup(lookup(var.base_configuration["platform_image_info"], var.image, {}), "platform_image", var.image)
   disk_snapshot = lookup(var.volume_provider_settings, "volume_snapshot", null)
   provider_settings = merge({
-    public_key_location        = var.base_configuration["public_key_location"]
+    public_key_name            = var.base_configuration["public_key_name"]
     key_file                   = var.base_configuration["key_file"]
+    key_resource_group         = var.base_configuration["key_resource_group"]
     ssh_user                   = lookup(lookup(var.base_configuration["platform_image_info"], var.image, {}), "ssh_user", "azureuser")
     volume_size     = 50
     bastion_host    = lookup(var.base_configuration, "bastion_host", null)
@@ -76,8 +77,8 @@ resource "azurerm_network_interface" "suma-additional-nic" {
 }
 
 data "azurerm_ssh_public_key" "suma-ci-public-ssh" {
-  name                = local.provider_settings["public_key_location"]
-  resource_group_name = "suma-ci-resources"
+  name                = local.provider_settings["public_key_name"]
+  resource_group_name = local.provider_settings["key_resource_group"]
 }
 
 resource "azurerm_linux_virtual_machine" "instance" {

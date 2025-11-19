@@ -2,7 +2,7 @@ locals {
   name_prefix = "Tfs"
   location = "francecentral"
   key_file            = "Private Key File"
-  public_key_location = "Public Key File"
+  public_key_name = "Public Key File"
 }
 
 provider "azurerm" {
@@ -21,7 +21,7 @@ module "base" {
   provider_settings = {
     location = local.location
     ssh_allowed_ips   = "*"
-    public_key_location = local.public_key_location
+    public_key_name = local.public_key_name
     key_file            = local.key_file
   }
 }

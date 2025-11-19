@@ -13,8 +13,9 @@ locals {
   private_security_group_id            = lookup(var.provider_settings, "private_security_group_id", null)
   private_additional_security_group_id = lookup(var.provider_settings, "private_additional_security_group_id", null)
   bastion_host                         = lookup(var.provider_settings, "bastion_host", null)
-  public_key_location = lookup(var.provider_settings, "public_key_location", null)
-  key_file = lookup(var.provider_settings, "key_file", null)
+  public_key_name                      = lookup(var.provider_settings, "key_name", null)
+  key_file                             = lookup(var.provider_settings, "key_file", null)
+  key_resource_group                   = lookup(var.provider_settings, "key_resource_group", null)
 }
 
 module "network" {
@@ -47,8 +48,9 @@ locals {
 
     location             = local.location
 
-    public_key_location  = local.public_key_location
+    public_key_name      = local.public_key_name
     key_file             = local.key_file
+    key_resource_group   = local.key_resource_group
     resource_group_name  = module.network.configuration.resource_group_name
     platform_image_info  = {
       suma-server-50-arm64-ltd-paygo  = { platform_image = data.azurerm_platform_image.suma-server-50-arm64-ltd-paygo },
