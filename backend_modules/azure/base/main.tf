@@ -94,7 +94,7 @@ module "bastion" {
   provider_settings = {
     vm_size            = "Standard_B1s"
     public_instance    = true
-    public_ip_instance = var.public_ip_bastion
+    public_ip_instance = var.use_eip_bastion
     overwrite_fqdn     = local.bastion_host
   }
 }
