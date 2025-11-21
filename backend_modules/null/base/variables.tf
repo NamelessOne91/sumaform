@@ -71,8 +71,8 @@ variable "images" {
   type        = set(string)
 }
 
-variable "use_eip_bastion" {
-  description = "Use eip feature for bastion on AWS"
+variable "public_ip_bastion" {
+  description = "Use a public static IP for bastion on Azure"
   default     = true
   type        = bool
 }

@@ -116,7 +116,7 @@ resource "azurerm_network_security_rule" "https" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "443"
-  source_address_prefix       = "*"
+  source_address_prefix       = var.ssh_allowed_ips
   destination_address_prefix  = "*"
 }
 
@@ -127,7 +127,7 @@ resource "azurerm_subnet_network_security_group_association" "public-nsg-associa
   network_security_group_id = "${azurerm_network_security_group.public-nsg[0].id}"
 }
 
- resource "azurerm_network_security_group" "private-nsg" {
+resource "azurerm_network_security_group" "private-nsg" {
   count = var.create_network? 1: 0
   name                = "${var.name_prefix}-private-nsg"
   resource_group_name = "${azurerm_resource_group.suma-rg.name}"

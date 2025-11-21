@@ -88,12 +88,14 @@ module "bastion" {
   source                        = "../host"
   quantity                      = local.create_network ? 1 : 0
   base_configuration            = local.configuration_output
-  image                         = "opensuse156o"
+  image                         = lookup(var.provider_settings, "bastion_image", "opensuse156o")
   name                          = "bastion"
   connect_to_additional_network = true
   provider_settings = {
-    vm_size = "Standard_B1s"
-    public_instance = true
+    vm_size            = "Standard_B1s"
+    public_instance    = true
+    public_ip_instance = var.public_ip_bastion
+    overwrite_fqdn     = local.bastion_host
   }
 }
 
