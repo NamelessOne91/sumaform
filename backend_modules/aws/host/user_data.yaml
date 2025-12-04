@@ -10,6 +10,22 @@ chpasswd:
     root:linux
 %{ endif ~}
 
+%{ if image == "tumbleweedo" ~}
+runcmd:
+  - zypper removerepo --all # remove existing Innovators repos to avoid conflicts
+  - zypper addrepo -G -e http://download.opensuse.org/tumbleweed/repo/oss/ os_pool
+  - zypper addrepo -G -e http://download.opensuse.org/update/tumbleweed/ os_update
+  - zypper addrepo -G -e http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/Tumbleweed-Uyuni-Client-Tools/openSUSE_Tumbleweed/ client_tools_tmp
+  - zypper ref
+  - zypper --non-interactive --gpg-auto-import-keys --auto-agree-with-licenses --allow-vendor-change dup
+%{ if install_salt_bundle ~}
+  - zypper in --allow-vendor-change --no-confirm venv-salt-minion
+%{ else ~}
+  - zypper up --allow-vendor-change --no-confirm salt-minion
+%{ endif ~}
+  - zypper removerepo --all
+%{ endif ~}
+
 %{ if image == "opensuse156o" ~}
 # WORKAROUND: install latest libzypp to prevent signature verification errors
 runcmd:
