@@ -8,7 +8,6 @@ echo "Waiting for cloud-init to finish VM setup"
 echo "Checking every $INTERVAL seconds, up to $MAX_RETRIES times"
 
 if [ -x /usr/bin/cloud-init ]; then
-    # Wait for cloud-init to finish
     NEXT_TRY=0
     until [ $NEXT_TRY -eq $MAX_RETRIES ] || ! cloud-init status | grep running
     do

@@ -133,6 +133,11 @@ resource "aws_instance" "instance" {
   lifecycle {
     ignore_changes = [tags]
   }
+
+
+  timeouts {
+    create = "20m"
+  }
 }
 
 resource "aws_route53_record" "dns_record" {
