@@ -4,6 +4,9 @@
 MAX_RETRIES="${1:-50}"  # Default: 50 retries x 10 seconds = 500 seconds
 INTERVAL=10
 
+echo "Waiting for cloud-init to finish VM setup"
+echo "Checking every $INTERVAL seconds, up to $MAX_RETRIES times"
+
 if [ -x /usr/bin/cloud-init ]; then
     # Wait for cloud-init to finish
     NEXT_TRY=0
