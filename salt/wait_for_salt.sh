@@ -1,18 +1,22 @@
 #!/bin/bash
 
+# Usage: wait_for_salt.sh [max_retries]
+MAX_RETRIES="${1:-50}"  # Default: 50 retries x 10 seconds = 500 seconds
+INTERVAL=10
+
 if [ -x /usr/bin/cloud-init ]; then
     # Wait for cloud-init to finish
     NEXT_TRY=0
-    until [ $NEXT_TRY -eq 50 ] || ! cloud-init status | grep running
+    until [ $NEXT_TRY -eq $MAX_RETRIES ] || ! cloud-init status | grep running
     do
             echo "cloud-init is still running. Retrying... [$NEXT_TRY]";
-            sleep 10;
+            sleep $INTERVAL;
             ((NEXT_TRY++));
     done
 
-    if [ $NEXT_TRY -eq 50 ]
+    if [ $NEXT_TRY -eq $MAX_RETRIES ]
     then
-            echo "ERROR: cloud-init is still running after 50 retries";
+            echo "ERROR: cloud-init is still running after $MAX_RETRIES retries";
             exit 1;
     fi
 fi
