@@ -27,13 +27,37 @@ large_deployment_tune_tomcat_maxthreads:
     - onchanges:
       - cmd: large_deployment_tune_tomcat_stylesheet_copy
 
+# Apply XSLT, fix permissions on tmp file, then move
+large_deployment_tune_tomcat_maxthreads:
+  cmd.run:
+    - name: |
+        mgrctl exec '
+        xsltproc /tmp/large_deployment_tune_tomcat.xslt /etc/tomcat/server.xml > /tmp/tomcat_server.xml && 
+        chown tomcat:tomcat /tmp/tomcat_server.xml && 
+        chmod 644 /tmp/tomcat_server.xml && 
+        mv /tmp/tomcat_server.xml /etc/tomcat/server.xml
+        '
+    - onchanges:
+      - cmd: large_deployment_tune_tomcat_stylesheet_copy
+
+# Fix the SELinux/Security context on the host volume
+large_deployment_tune_tomcat_relabel_selinux_host:
+  cmd.run:
+    - name: |
+        chmod 644 /var/lib/containers/storage/volumes/etc-tomcat/_data/server.xml
+        chcon -Rt container_file_t /var/lib/containers/storage/volumes/etc-tomcat/_data
+    - onchanges:
+      - cmd: large_deployment_tune_tomcat_maxthreads
+    - onlyif: 'which chcon'
+
 large_deployment_tomcat_restart:
   cmd.run:
     - name: mgrctl exec systemctl restart tomcat
     - watch:
       - cmd: large_deployment_increase_tasko_parallel_threads
       - cmd: large_deployment_increase_hibernate_max_connections
-      - cmd: large_deployment_tune_tomcat_maxthreads
+      - cmd: large_deployment_tune_tomcat_fix_perms_internal
+      - cmd: large_deployment_tune_tomcat_relabel_selinux_host
 
 {% if '5.1' in grains.get('product_version', '') or 'uyuni' in grains.get('product_version', '') or 'head' in grains.get('product_version', '') or '5.1' in grains.get('product_version', '') %}
 large_deployment_increase_sshd_maxstartups:
