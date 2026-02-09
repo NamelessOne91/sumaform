@@ -783,8 +783,11 @@ runcmd:
   # WORKAROUND: cloud-init in Liberty 9 does not take care of the following
   - echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
   - systemctl restart sshd
+%{ if install_salt_bundle ~}
   - dnf -y install venv-salt-minion
-
+%{ else ~}
+  - dnf -y install salt-minion
+%{ endif ~} 
 %{ endif ~}
 
 %{ if image == "openeuler2403o" ~}

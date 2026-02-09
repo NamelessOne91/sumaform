@@ -343,6 +343,7 @@ module "amazon2023_minion" {
   auto_connect_to_master  = false
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "centos7_minion" {
@@ -375,6 +376,7 @@ module "liberty9_minion" {
   auto_connect_to_master  = false
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "oracle9_minion" {
@@ -391,6 +393,7 @@ module "oracle9_minion" {
   auto_connect_to_master  = false
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "rocky8_minion" {
@@ -784,6 +787,7 @@ module "amazon2023_sshminion" {
   }
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "centos7_sshminion" {
@@ -815,6 +819,7 @@ module "liberty9_sshminion" {
   }
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "oracle9_sshminion" {
@@ -830,6 +835,7 @@ module "oracle9_sshminion" {
   }
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+  install_salt_bundle     = false
 }
 
 module "rocky8_sshminion" {
