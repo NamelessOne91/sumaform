@@ -53,7 +53,6 @@ change_searchlist:
 # this is not needed if a proper DNS server is in place, but when using avahi this
 # might not be the case. The script tries to to use real IP addresses in order not
 # to break round-robin DNS resolution and only uses 127.0.1.1 as a last resort.
-{% if grains['use_avahi'] %}
 hosts_file_hack:
   cmd.script:
     - name: salt://default/set_ip_in_etc_hosts.py
@@ -63,4 +62,3 @@ hosts_file_hack:
     - args: "--no-ipv6 {{ grains['hostname'] }} {{ grains['domain'] }}"
     {% endif %}
     - template: jinja
-{% endif %}
