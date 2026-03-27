@@ -6,7 +6,7 @@ mgradm_config:
 
 mgradm_install:
   cmd.run:
-    - name: mgradm install podman --logLevel=debug --config /root/mgradm.yaml {{ grains['fqdn'] }}
+    - name: mgradm install podman --logLevel=debug --tftpd-enable --config /root/mgradm.yaml {{ grains['fqdn'] }}
     - unless: podman ps | grep uyuni-server
     - require:
       - sls: server_containerized.install_common
