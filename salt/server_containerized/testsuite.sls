@@ -80,6 +80,9 @@ uyuni_repo_key_import:
     - name: "mgradm gpg add -f /tmp/uyuni.key"
     - onchanges:
       - file: uyuni_key_copy_host
+    - retry:
+        attempts: 5
+        interval: 5
 {% else %}
 
 galaxy_key_copy_host:
@@ -121,6 +124,9 @@ create_pillar_top_sls_to_assign_salt_bundle_config:
     - name: mgrctl exec "echo -e \"base:\n  '*':\n    - salt_bundle_config\" >/srv/pillar/top.sls"
     - require:
       - sls: server_containerized.install_{{ grains.get('container_runtime') | default('podman', true) }}
+    - retry:
+        attempts: 5
+        interval: 5
 
 custom_pillar_to_force_salt_bundle:
   cmd.run:
@@ -140,6 +146,9 @@ write_to_rhn_conf:
         java.kiwi_os_image_building_enabled: true
     - require:
       - sls: server_containerized.install_{{ grains.get('container_runtime') | default('podman', true) }}
+    - retry:
+        attempts: 5
+        interval: 5
 
 tomcat_restart:
   cmd.run:
@@ -157,6 +166,9 @@ dump_salt_event_log:
     - name: mgrctl cp /root/salt-events.service server:/usr/lib/systemd/system/salt-events.service
     - require:
       - file: salt_event_service_file
+    - retry:
+        attempts: 5
+        interval: 5
 
 dump_salt_event_log_start:
   cmd.run:
