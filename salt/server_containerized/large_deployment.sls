@@ -1,4 +1,4 @@
-# See https://documentation.suse.com/suma/4.3/en/suse-manager/specialized-guides/large-deployments/tuning.html
+# See SUSE Manager documentation for large-deployments tuning
 
 {% if grains.get('large_deployment') | default(false, true) %}
 

@@ -3,7 +3,7 @@ module "base" {
 
   cc_username = "UC7"
   cc_password = ...
-  product_version = "4.3-nightly"
+  product_version = "head"
 
   // optional parameters with defaults below
   // use_avahi = true

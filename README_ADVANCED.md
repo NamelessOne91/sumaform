@@ -9,8 +9,6 @@ Some modules have a `product_version` variable that determines the software prod
 
 Legal values for released software are:
 
-- `4.3-released` (latest released maintenance update for SUSE Manager 4.3 and Tools)
-- `4.3-VM-released` (latest released maintenance update for SUSE Manager 4.3 virtual machine)
 - `5.0-released` (latest released maintenance update for SUSE Manager 5.0 and Tools)
 - `5.1-released` (latest released maintenance update for Multi Linux Manager 5.1 and Tools)
 - `5.2-released` (latest released maintenance update for Multi Linux Manager 5.2 and Tools)
@@ -18,8 +16,6 @@ Legal values for released software are:
 
 Legal values for work-in-progress software are:
 
-- `4.3-nightly` (corresponds to the Build Service project Devel:Galaxy:Manager:4.3)
-- `4.3-VM-nightly` (corresponds to the VM image in the Build Service project Devel:Galaxy:Manager:4.3)
 - `5.0-nightly` (corresponds to the Build Service project Devel:Galaxy:Manager:5.0)
 - `5.1-nightly` (corresponds to the Build Service project Devel:Galaxy:Manager:5.1)
 - `head` (corresponds to the Build Service project Devel:Galaxy:Manager:Main, uses SL Micro 6.1 as the base image for server)
@@ -518,7 +514,7 @@ module "server" {
   base_configuration = module.base.configuration
 
   name = "server"
-  product_version = "4.3-nightly"
+  product_version = "head"
 }
 
 module "proxy" {
@@ -526,7 +522,7 @@ module "proxy" {
   base_configuration = module.base.configuration
 
   name = "proxy"
-  product_version = "4.3-nightly"
+  product_version = "head"
   server_configuration = module.server.configuration
 }
 
@@ -1059,7 +1055,7 @@ This mode currently covers the Uyuni server deployment. Do not combine it with `
 ## Large deployments
 
 By default to support the load in our test suites, when trying to reproduce situations with a large number of clients, it is advised to use `large_deployment` option.
-This option is inspired by the documentation at https://documentation.suse.com/suma/4.3/en/suse-manager/specialized-guides/large-deployments/tuning.html, and it will apply the following settings on the server:
+This option is inspired by the SUSE Manager documentation for large deployments tuning, and it will apply the following settings on the server:
 
 ```
 ### /etc/rhn/rhn.conf
