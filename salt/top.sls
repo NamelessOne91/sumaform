@@ -2,10 +2,6 @@ base:
   '*':
     - default
 
-  'roles:server':
-    - match: grain
-    - server
-
   'roles:server_containerized':
     - match: grain
     - server_containerized
@@ -17,10 +13,6 @@ base:
   'roles:client':
     - match: grain
     - client
-
-  'roles:proxy':
-    - match: grain
-    - proxy
 
   'roles:proxy_containerized':
     - match: grain

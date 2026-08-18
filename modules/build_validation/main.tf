@@ -6,8 +6,8 @@ locals {
   host_deblike = lookup(var.module_base_configurations, "deblike", local.base_core)
   base_retail  = lookup(var.module_base_configurations, "retail",  local.base_core)
 
-  server_configuration = length(module.server_containerized) > 0 ? module.server_containerized[0].configuration : module.server[0].configuration
-  proxy_configuration = length(module.proxy_containerized) > 0 ? module.proxy_containerized[0].configuration : (length(module.proxy) > 0 ? module.proxy[0].configuration : local.empty_server_proxy_config)
+  server_configuration = length(module.server_containerized) > 0 ? module.server_containerized[0].configuration : local.empty_server_proxy_config
+  proxy_configuration = length(module.proxy_containerized) > 0 ? module.proxy_containerized[0].configuration : local.empty_server_proxy_config
   empty_minion_config = { ids = [], hostnames = [], macaddrs = [], private_macs = [], ipaddrs = [] }
   empty_terminal_config = { private_mac = null, private_ip = null, private_name = null, image = null }
   empty_server_proxy_config = { hostname = null }
@@ -63,48 +63,6 @@ module "base_s390" {
   provider_settings = {
     key_file = var.controller_private_ssh_key_path
   }
-}
-
-module "server" {
-  count               = lookup(var.environment_configuration, "server", null) != null ? 1 : 0
-
-  source             = "../server"
-  base_configuration = local.base_core
-  name               = "server"
-  image              = "sles15sp4o"
-  beta_enabled       = false
-  provider_settings = {
-    mac       = var.environment_configuration.server.mac
-    memory    = 40960
-    vcpu      = 10
-    data_pool = "ssd"
-  }
-  main_disk_size       = 100
-  repository_disk_size = 3072
-  database_disk_size   = 150
-
-  server_mounted_mirror          = var.platform_location_configuration[var.location].mirror
-  java_debugging                 = true
-  auto_accept                    = false
-  monitored                      = true
-  disable_firewall               = false
-  allow_postgres_connections     = false
-  skip_changelog_import          = false
-  create_first_user              = false
-  mgr_sync_autologin             = false
-  create_sample_channel          = false
-  create_sample_activation_key   = false
-  create_sample_bootstrap_script = false
-  publish_private_ssl_key        = false
-  use_os_released_updates        = true
-  disable_download_tokens        = false
-  disable_auto_bootstrap         = true
-  large_deployment               = true
-  ssh_key_path                   = var.controller_public_ssh_key_path
-  from_email                     = "root@suse.de"
-  accept_all_ssl_protocols       = true
-
-  additional_repos               = var.server_additional_repos
 }
 
 module "server_containerized" {
@@ -215,31 +173,6 @@ module "server4_containerized" {
   skip_server_install     = try(var.environment_configuration.server4_containerized.skip_server_install, false)
   additional_repos   = var.server_additional_repos
   ssh_key_path       = var.controller_public_ssh_key_path
-}
-
-module "proxy" {
-  providers = { libvirt = libvirt.host_retail }
-  source               = "../proxy"
-  count               = lookup(var.environment_configuration, "proxy", null) != null ? 1 : 0
-  base_configuration   = local.base_retail
-  server_configuration = module.server[0].configuration
-  name                 = "proxy"
-  image                = "sles15sp4o"
-  provider_settings = {
-    mac    = var.environment_configuration.proxy.mac
-    memory = 4096
-  }
-  auto_register             = false
-  auto_connect_to_master    = false
-  download_private_ssl_key  = false
-  install_proxy_pattern     = false
-  auto_configure            = false
-  generate_bootstrap_script = false
-  publish_private_ssl_key   = false
-  use_os_released_updates   = true
-  ssh_key_path              = var.controller_public_ssh_key_path
-
-  additional_repos          = var.proxy_additional_repos
 }
 
 module "proxy_containerized" {

@@ -178,16 +178,6 @@ variable "login_timeout" {
   default     = null
 }
 
-variable "container_server" {
-  description = "true to run the server in containers"
-  default = false
-}
-
-variable "container_proxy" {
-  description = "true to run the proxy in containers"
-  default = false
-}
-
 variable "kubernetes" {
   description = "true to run the server and the proxy on kubernetes"
   default = false
