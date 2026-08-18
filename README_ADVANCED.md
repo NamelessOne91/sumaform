@@ -46,7 +46,7 @@ module "suse_minion" {
 }
 
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   name = "server"
@@ -66,7 +66,7 @@ The following example creates a SUSE Manager server using "nightly" packages fro
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   image = "sles15sp7o"
@@ -311,7 +311,7 @@ Then add it to the `channels` variable in a SUSE Manager Server module:
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   name = "server"
@@ -337,7 +337,7 @@ A libvirt example follows:
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   name = "server"
@@ -514,7 +514,7 @@ A `proxy` module is similar to a `client` module but has a `product_version` and
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   name = "server"
@@ -522,7 +522,7 @@ module "server" {
 }
 
 module "proxy" {
-  source = "./modules/proxy"
+  source = "./modules/proxy_containerized"
   base_configuration = module.base.configuration
 
   name = "proxy"
@@ -547,7 +547,7 @@ Note that systems prepared by this module are by default registered as a Salt mi
 
 ```hcl
 module "proxy" {
-  source = "./modules/proxy"
+  source = "./modules/proxy_containerized"
   base_configuration = module.base.configuration
 
   name = "proxy"
@@ -716,7 +716,7 @@ You can configure SUSE Manager instances to download packages from an SMT server
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
 
   name = "server"
@@ -957,7 +957,7 @@ An example follows:
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
   product_version = "5.0-nightly"
   name = "server"
@@ -1227,7 +1227,7 @@ module "rds" {
 }
 
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
   db_configuration = module.db.configuration
   ...

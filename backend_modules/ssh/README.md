@@ -80,7 +80,7 @@ An example with module dependency follows:
 ```hcl-terraform
 
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   ...
 }
 

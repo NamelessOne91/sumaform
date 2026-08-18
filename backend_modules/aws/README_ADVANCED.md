@@ -155,7 +155,7 @@ Example:
 
 ```hcl
 module "server" {
-  source = "./modules/server"
+  source = "./modules/server_containerized"
   base_configuration = module.base.configuration
   name            = "server"
   image           = "AMI-123456789"
