@@ -43,7 +43,8 @@ certManagerNamespace: {{ cert_manager_namespace }}
 
 # All the server helm chart values can be passed under this property
 server-helm: 
-  repository: {{ container_registry }}
+  # TEMPORARY: test server image from uyuni PR #12965 (tmp.mount masked), do not merge
+  repository: registry.opensuse.org/home/mbussolotto/branches/systemsmanagement/uyuni/master/containerfile/uyuni
   pullPolicy: "Always"
   tag: "latest"
   timezone: {{ grains.get('timezone', 'Europe/Berlin') }}
